@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mix-Guided VC</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="py-5 text-center" id="title-containter">
+        <h1 class="display-5 fw-bold fs-2">
+            Mix-Guided VC: Any-to-many Voice Conversion by Combining ASR and TTS Bottleneck Features
+        </h1>
+    </div>
+
+    <div class="py-5" id="wrapper">
+
+        <!--=============================Abstract=============================-->
+
+        <h2 class="pb-3 py-6 fs-3 fw-bold border-bottom">
+            Abstract
+        </h2>
+        <p class="py-3">
+            Due to the difficulty of obtaining parallel data, there are many works focus on non-parallel voice conversion(VC) recently. Bottleneck features(BNFs) from automatic speech recognition(ASR) and text-to-speech(TTS) models play an important role in feature disentangling for VC. In this work, we propose Mix-Guided VC, a non-parallel any-to-many voice conversion model by combining ASR-BNFs and TTS-BNFs. We demonstrate that ASR-BNFs and TTS-BNFs are complementary. ASR-BNFs are more robust especially in any-to-many tasks, but suffer from leaking source speaker's timbre information; TTS-BNFs are closely correlated with text, but lack robustness. Experiments show that the proposed model outperforms baseline models in terms of speech quality, timbre similarity and robustness. Furthermore, the whole modules in the proposed model can be trained jointly and no more pre-training data is needed.
+        </p>
+
+        <!--=============================Audio Samples=============================-->
+
+        <h2 class="pb-3 py-6 fs-3 fw-bold border-bottom">Audio Samples</h2>
+        <p class="py-3 p-special">Audio samples of the source and target are real audios, others use <strong>HiFi-GAN</strong> as vocoder.</p>
+        <p>Source speech in English is from <a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech</a>.</p>
+
+        <!--=============Audio Quality=============-->
+
+        <h3 class="py-3 fs-4 fw-bold greed-text">Many-to-Many Conversion</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <!--=============Female-to-Female=============-->
+                <h4 class="yellow-text">Female-to-Female</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample 1</th>
+                      <th>Sample 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/many2many/female2female/source_067253.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2female/source_090011.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/many2many/female2female/target_049119.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2female/target_011059.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/female2female/asr_vc_067253_049.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2female/asr_vc_090011_011.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/female2female/tts_vc_067253_049.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2female/tts_vc_090011_011.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/female2female/mix_vc_067253_049.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2female/mix_vc_090011_011.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <!--=============Male-to-Male=============-->
+                <h4 class="yellow-text">Male-to-Male</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample 1</th>
+                      <th>Sample 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/many2many/male2male/source_007095.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2male/source_100061.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/many2many/male2male/target_009111.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2male/target_059035.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/male2male/asr_vc_007095_009.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2male/asr_vc_100061_059.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/male2male/tts_vc_007095_009.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2male/tts_vc_100061_059.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/male2male/mix_vc_007095_009.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2male/mix_vc_100061_059.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <!--=============Female-to-Male=============-->
+                <h4 class="yellow-text">Female-to-Male</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample 1</th>
+                      <th>Sample 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/many2many/female2male/source_049420.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2male/source_018001.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/many2many/female2male/target_046075.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2male/target_042006.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/female2male/asr_vc_049420_046.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2male/asr_vc_018001_042.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/female2male/tts_vc_049420_046.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2male/tts_vc_018001_042.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/female2male/mix_vc_049420_046.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/female2male/mix_vc_018001_042.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <!--=============Male-to-Female=============-->
+                <h4 class="yellow-text">Male-to-Female</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample 1</th>
+                      <th>Sample 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/many2many/male2female/source_008029.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2female/source_078458.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/many2many/male2female/target_102003.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2female/target_023250.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/male2female/asr_vc_008029_102.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2female/asr_vc_078458_023.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/male2female/tts_vc_008029_102.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2female/tts_vc_078458_023.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/many2many/male2female/mix_vc_008029_102.wav" controls="controls"></audio></td>
+                      <td><audio src="wavs/many2many/male2female/mix_vc_078458_023.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--=============Any-to-Many=============-->
+        <h3 class="py-3 fs-4 fw-bold greed-text">Any-to-Many Conversion</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <!--=============Female-to-Female=============-->
+                <h4 class="yellow-text">Female-to-Female</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/any2many/female2female/source_000234.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/any2many/female2female/target_018234.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/female2female/asr_vc_000234_018.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/female2female/tts_vc_000234_018.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/female2female/mix_vc_000234_018.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <!--=============Male-to-Male=============-->
+                <h4 class="yellow-text">Male-to-Male</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/any2many/male2male/source_000002.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/any2many/male2male/target_101008.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/male2male/asr_vc_db3_101.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/male2male/tts_vc_db3_101.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/male2male/mix_vc_db3_101.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <!--=============Female-to-Male=============-->
+                <h4 class="yellow-text">Female-to-Male</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/any2many/female2male/source_001000.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/any2many/female2male/target_042005.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/female2male/asr_vc_001000_042.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/female2male/tts_vc_001000_042.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/female2male/mix_vc_001000_042.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <!--=============Male-to-Female=============-->
+                <h4 class="yellow-text">Male-to-Female</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/any2many/male2female/source_000002.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/any2many/male2female/target_104009.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/male2female/asr_vc_db3_104.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/male2female/tts_vc_db3_104.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/male2female/mix_vc_db3_104.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <!--=============Female(English) to Kid=============-->
+                <h4 class="yellow-text">Female(English) to Kid</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/any2many/english/source_LJ001-0001.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/any2many/english/target_000103.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/english/asr_vc_ljspeech_000.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/english/tts_vc_ljspeech_000.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/english/mix_vc_ljspeech_000.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <!--=============Female(English) to Male=============-->
+                <h4 class="yellow-text">Female(English) to Male</h4>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Sample</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td><audio src="wavs/any2many/english/source_LJ001-0001.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Target</strong></td>
+                      <td><audio src="wavs/any2many/english/target_095005.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ASR-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/english/asr_vc_ljspeech_095.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>TTS-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/english/tts_vc_ljspeech_095.wav" controls="controls"></audio></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mix-Guided VC</strong></td>
+                      <td><audio src="wavs/any2many/english/mix_vc_ljspeech_095.wav" controls="controls"></audio></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
